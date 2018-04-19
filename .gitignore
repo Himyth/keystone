@@ -4,10 +4,8 @@
 *.o
 *.a
 *.dSYM
-*.so
 *.so.*
 *.exe
-*.dll
 *.class
 *.jar
 *.pyc

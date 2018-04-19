@@ -17,13 +17,18 @@ from distutils.command.sdist import sdist
 from distutils.core import setup
 
 # prebuilt libraries for Windows - for sdist
-PATH_LIB64 = "prebuilt/win64/keystone.dll"
-PATH_LIB32 = "prebuilt/win32/keystone.dll"
+PATH_WIN_32 = "prebuilt/win32/keystone.dll"
+PATH_WIN_64 = "prebuilt/win64/keystone.dll"
+PATH_LINUX_32 = "prebuilt/linux32/libkeystone.so"
+PATH_LINUX_64 = "prebuilt/linux64/libkeystone.so"
 
 # package name can be 'keystone-engine' or 'keystone-engine-windows'
-PKG_NAME = 'keystone-engine'
-if os.path.exists(PATH_LIB64) and os.path.exists(PATH_LIB32):
+import platform
+system = platform.system()
+if system == 'Windows':
     PKG_NAME = 'keystone-engine-windows'
+else:
+    PKG_NAME = 'keystone-engine'
 
 VERSION = '0.9.1-3'
 SYSTEM = sys.platform
@@ -111,14 +116,18 @@ class custom_build_clib(build_clib):
 
         cur_dir = os.path.realpath(os.curdir)
 
-        if SYSTEM in ("win32", "cygwin"):
-            # if Windows prebuilt library is available, then include it
-            if is_64bits and os.path.exists(PATH_LIB64):
-                SETUP_DATA_FILES.append(PATH_LIB64)
-                return
-            elif os.path.exists(PATH_LIB32):
-                SETUP_DATA_FILES.append(PATH_LIB32)
-                return
+        if system == 'Linux' or system == 'Windows':
+            if system == 'Windows':
+                if is_64bits:
+                    SETUP_DATA_FILES.append(PATH_WIN_64)
+                else:
+                    SETUP_DATA_FILES.append(PATH_WIN_32)
+            else:
+                if is_64bits:
+                    SETUP_DATA_FILES.append(PATH_LINUX_64)
+                else:
+                    SETUP_DATA_FILES.append(PATH_LINUX_32)
+            return
 
         # build library from source if src/ is existent
         if not os.path.exists('src'):

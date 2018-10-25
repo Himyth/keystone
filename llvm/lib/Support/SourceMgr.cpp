@@ -219,12 +219,20 @@ void SourceMgr::PrintMessage(raw_ostream &OS, SMLoc Loc,
                              SourceMgr::DiagKind Kind,
                              const Twine &Msg, ArrayRef<SMRange> Ranges,
                              ArrayRef<SMFixIt> FixIts, bool ShowColors) const {
+
+  // GetMessage call in the next line will also crash, comment this too
+  return;
+
   PrintMessage(OS, GetMessage(Loc, Kind, Msg, Ranges, FixIts), ShowColors);
 }
 
 void SourceMgr::PrintMessage(SMLoc Loc, SourceMgr::DiagKind Kind,
                              const Twine &Msg, ArrayRef<SMRange> Ranges,
                              ArrayRef<SMFixIt> FixIts, bool ShowColors) const {
+
+  // brother, together!
+  return;
+
   PrintMessage(llvm_ks::errs(), Loc, Kind, Msg, Ranges, FixIts, ShowColors);
 }
 

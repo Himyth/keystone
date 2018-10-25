@@ -196,6 +196,10 @@ SMDiagnostic SourceMgr::GetMessage(SMLoc Loc, SourceMgr::DiagKind Kind,
 
 void SourceMgr::PrintMessage(raw_ostream &OS, const SMDiagnostic &Diagnostic,
                              bool ShowColors) const {
+
+  // comment out this function temporarily to avoid crash
+  return;
+
   // Report the message with the diagnostic handler if present.
   if (DiagHandler) {
     DiagHandler(Diagnostic, DiagContext);
